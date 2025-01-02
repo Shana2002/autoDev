@@ -19,6 +19,7 @@ class CustomDialog:
         self.use_database_var = BooleanVar(value=False)
         self.selected_table_var = StringVar()
         self.selected_column_var = StringVar()
+        self.custome_time_var = IntVar(value=2)
 
         # Return value
         self.result = None
@@ -57,6 +58,13 @@ class CustomDialog:
         self.path_entry = Entry(main_frame, textvariable=self.path_var, width=28, font=("Helvetica", 10))
         self.path_entry.grid(row=3, column=1, pady=5)
 
+        # Delay Entry
+        path_label = Label(main_frame, text="Delay:", font=("Helvetica", 12))
+        path_label.grid(row=4, column=0, sticky="w", pady=5)
+
+        self.path_entry = Entry(main_frame, textvariable=self.custome_time_var, width=28, font=("Helvetica", 10))
+        self.path_entry.grid(row=4, column=1, pady=5)
+
         # Toggle Buttons for Value
         self.manual_button = Radiobutton(main_frame, text="Manual Entry", variable=self.use_database_var,
                                           value=False, command=self.update_value_fields, font=("Helvetica", 12))
@@ -66,6 +74,7 @@ class CustomDialog:
         # Value Section
         self.value_label = Label(main_frame, text="Enter Value:", font=("Helvetica", 12))
         self.value_entry = Entry(main_frame, textvariable=self.value_var, width=28, font=("Helvetica", 10))
+
 
         # Database Section
         self.table_label = Label(main_frame, text="Select Table:", font=("Helvetica", 12))
@@ -94,8 +103,8 @@ class CustomDialog:
     def update_fields(self, event=None):
         """Show or hide fields based on the selected action type."""
         if self.action_type_var.get() == "send data":
-            self.manual_button.grid(row=4, column=0, sticky="w", pady=5)
-            self.database_button.grid(row=4, column=1, pady=5)
+            self.manual_button.grid(row=5, column=0, sticky="w", pady=5)
+            self.database_button.grid(row=5, column=1, pady=5)
             self.update_value_fields()
         else:
             self.manual_button.grid_forget()
@@ -112,17 +121,17 @@ class CustomDialog:
         if self.use_database_var.get():
             self.value_label.grid_forget()
             self.value_entry.grid_forget()
-            self.table_label.grid(row=5, column=0, sticky="w", pady=5)
-            self.table_menu.grid(row=5, column=1, pady=5)
-            self.column_label.grid(row=6, column=0, sticky="w", pady=5)
-            self.column_menu.grid(row=6, column=1, pady=5)
+            self.table_label.grid(row=6, column=0, sticky="w", pady=5)
+            self.table_menu.grid(row=6, column=1, pady=5)
+            self.column_label.grid(row=7, column=0, sticky="w", pady=5)
+            self.column_menu.grid(row=7, column=1, pady=5)
         else:
             self.table_label.grid_forget()
             self.table_menu.grid_forget()
             self.column_label.grid_forget()
             self.column_menu.grid_forget()
-            self.value_label.grid(row=5, column=0, sticky="w", pady=5)
-            self.value_entry.grid(row=5, column=1, pady=5)
+            self.value_label.grid(row=6, column=0, sticky="w", pady=5)
+            self.value_entry.grid(row=6, column=1, pady=5)
 
     def update_columns(self, event=None):
         """Update column options based on the selected table."""
@@ -151,6 +160,7 @@ class CustomDialog:
             "type": self.path_type_var.get(),
             "path": self.path_var.get(),
             "value": value,
+            "delay": self.custome_time_var.get(),
         }
         self.dialog.destroy()
 

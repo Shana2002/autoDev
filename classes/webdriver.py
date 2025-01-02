@@ -18,30 +18,30 @@ class Webdriver:
         service = Service(ChromeDriverManager().install())
         self.__new_driver = webdriver.Chrome(service=service)
         self.__new_driver.get(weblink)
-        self.onhold(10)
+        self.onhold(5)
         
     
-    def on_click(self,type,path):
+    def on_click(self,type,path,time=2):
         try:
             action_type = typeMapping[type]
             clickable = self.__new_driver.find_element(by=action_type,value=path)
             clickable.click()
+            self.onhold(time)
             return True
         except Exception as e:
             return False,e
         
     
-    def assigenValue(self,type,path,value):
+    def assigenValue(self,type,path,value,time=2):
         try:
             action_type = typeMapping[type]
             value_assigner = self.__new_driver.find_element(by=action_type,value=path)
             value_assigner.send_keys(value)
+            self.onhold(time)
             return True
         except Exception as e:
             return False,e
 
-        
-    
     def onhold(self,var_time):
         time.sleep(var_time)
 

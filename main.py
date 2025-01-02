@@ -7,12 +7,7 @@ from run import Run
 class Main:
     def __init__(self, root):
         # Variables
-        self.actions = [
-    {"function":"click","type":"xpath","path":'/html/body/div[1]/div/div[3]/a[1]/i',"value":"hansaka"},
-    {"function":"send_key","type":"xpath","path":'//*[@id="username"]',"value":{"table":"users","column":"username"}},
-    {"function":"send_key","type":"xpath","path":'//*[@id="password"]',"value":"hansaka"},
-    {"function":"click","type":"xpath","path":'//*[@id="login-form"]/div[2]/div[2]/div[1]/form/input',"value":"hansaka"},
-    ]
+        self.actions = []
         # Main Frame
         self.root = root
         self.root.geometry("800x640+0+0")

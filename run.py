@@ -34,20 +34,21 @@ class Run:
                 do_function = action["function"]
                 if do_function == "click":
                     self.driver.on_click(action["type"], action["path"])
-                    self.driver.onhold(5)
+                    # self.driver.onhold(5)
                 elif do_function == "send_key":
                     if isinstance(action['value'],dict):
                         table = action['value']['table']
                         column = action['value']['column']
                         row = i + 1
                         value = getData(table,column,row)
-                        self.driver.assigenValue(action["type"], action["path"], value)
+                        self.driver.assigenValue(action["type"], action["path"], value,time=action['delay'])
                     else:
-                        self.driver.onhold(4)
-                        self.driver.assigenValue(action["type"], action["path"], action["value"])
-                        self.driver.onhold(4)
+                        # self.driver.onhold(4)
+                        self.driver.assigenValue(action["type"], action["path"], action["value"],time=action['delay'])
+                        # self.driver.onhold(4)
                 else:
                     print("Unknown function:", do_function)
+            self.driver.onhold(5)
             self.driver.onDelete()
 
 

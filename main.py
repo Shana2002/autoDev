@@ -6,8 +6,7 @@ from custom_dialog import CustomDialog
 class Main:
     def __init__(self, root):
         # Variables
-        self.count = 0
-
+        self.actions = []
         # Main Frame
         self.root = root
         self.root.geometry("800x640+0+0")
@@ -72,19 +71,34 @@ class Main:
         btn_add.pack(side="top", pady=10)
 
     def add_event(self):
-        dialog = CustomDialog(root,)
+        dialog = CustomDialog(root)
+        result = dialog.show()
+        if result:
+            self.actions.append(result)
+            self.create_subframe()
 
-        # Create a new sub-frame
-        sub_frame = Frame(self.main_frame, bg="yellow", width=300, height=50)
-        sub_frame.pack(pady=5, padx=10, anchor="w")
-        Label(sub_frame, text=f"Action {self.count + 1}", bg="yellow").pack()
+    def create_subframe(self):
+        """Create sub-frames dynamically based on actions and manage scroll region."""
+        if self.actions:
+            # Clear the main_frame children before adding new ones
+            for widget in self.main_frame.winfo_children():
+                widget.destroy()
 
-        # Increment the count
-        self.count += 1
+            for action in self.actions:
+                # Create a new sub-frame for each action
+                sub_frame = Frame(self.main_frame, bg="yellow", width=300, height=50)
+                sub_frame.pack(pady=5, padx=10, anchor="w")
+                
+                # Add a label with action details
+                Label(sub_frame, text=f"{action['path']}", bg="yellow").pack()
 
-        # Update the canvas scrollregion
-        self.canvas.update_idletasks()
-        self.canvas.configure(scrollregion=self.canvas.bbox("all"))
+                # Increment the count
+                self.count += 1
+
+            # Update the canvas scrollregion to accommodate new widgets
+            self.canvas.update_idletasks()
+            self.canvas.configure(scrollregion=self.canvas.bbox("all"))
+        
 
 
 if __name__ == "__main__":

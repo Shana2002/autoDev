@@ -46,10 +46,10 @@ class Main:
         url_entry.pack(side="top", pady=2)
 
         # Main action frame with scrollable canvas
-        canvas_frame = Frame(root, bg="white", width=500, height=300)
+        canvas_frame = Frame(root, bg="#23252D", width=500, height=300)
         canvas_frame.pack(side="top", pady=10)
 
-        self.canvas = Canvas(canvas_frame, bg="white", width=480, height=300)
+        self.canvas = Canvas(canvas_frame, bg="#23252D", width=480, height=300)
         self.canvas.pack(side="left", fill="both", expand=True)
 
         scrollbar = ttk.Scrollbar(
@@ -63,7 +63,7 @@ class Main:
             lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")),
         )
 
-        self.main_frame = Frame(self.canvas, bg="white")
+        self.main_frame = Frame(self.canvas, bg="#23252D")
         self.canvas.create_window((0, 0), window=self.main_frame, anchor="nw")
 
         # Add action button
@@ -86,18 +86,27 @@ class Main:
 
             for action in self.actions:
                 # Create a new sub-frame for each action
-                sub_frame = Frame(self.main_frame, bg="yellow", width=300, height=50)
-                sub_frame.pack(pady=5, padx=10, anchor="w")
-                
-                # Add a label with action details
-                Label(sub_frame, text=f"{action['path']}", bg="yellow").pack()
+                sub_frame = Frame(self.main_frame, bg="#f0f0f0", bd=2, relief="groove", padx=10, pady=5)
+                sub_frame.pack(fill="x", pady=5, padx=10, anchor="w")
 
-                # Increment the count
-                self.count += 1
+                # Path Label
+                Label(sub_frame, text=f"Path: {action['path']}", font=("Helvetica", 10, "bold"), bg="#f0f0f0").grid(row=0, column=0, sticky="w", padx=5)
+
+                # Value Label
+                Label(sub_frame, text=f"Value: {action.get('value', 'N/A')}", font=("Helvetica", 10), bg="#f0f0f0").grid(row=1, column=0, sticky="w", padx=5)
+
+                # Delete Button
+                delete_button = Button(sub_frame, text="Delete", bg="#FF6347", fg="white", font=("Helvetica", 10, "bold"), command=lambda a=action: self.delete_action(a))
+                delete_button.grid(row=0, column=1, rowspan=2, padx=10, sticky="e")
+
+                # Edit Button
+                edit_button = Button(sub_frame, text="Edit", bg="#4682B4", fg="white", font=("Helvetica", 10, "bold"), command=lambda a=action: self.edit_action(a))
+                edit_button.grid(row=0, column=2, rowspan=2, padx=5, sticky="e")
 
             # Update the canvas scrollregion to accommodate new widgets
             self.canvas.update_idletasks()
             self.canvas.configure(scrollregion=self.canvas.bbox("all"))
+
         
 
 

@@ -9,7 +9,7 @@ class Main:
         # Variables
         self.actions = [
     {"function":"click","type":"xpath","path":'/html/body/div[1]/div/div[3]/a[1]/i',"value":"hansaka"},
-    {"function":"send_key","type":"xpath","path":'//*[@id="username"]',"value":"hansaka"},
+    {"function":"send_key","type":"xpath","path":'//*[@id="username"]',"value":{"table":"users","column":"username"}},
     {"function":"send_key","type":"xpath","path":'//*[@id="password"]',"value":"hansaka"},
     {"function":"click","type":"xpath","path":'//*[@id="login-form"]/div[2]/div[2]/div[1]/form/input',"value":"hansaka"},
     ]
@@ -144,10 +144,7 @@ class Main:
     
     def run_action(self,count_var,url_var):
         if count_var.get()>0 and url_var.get()!="" and len(self.actions)>0:
-            print("hello")
             run_status = Run(self.root,count_var.get(),url_var.get(),self.actions)
-        else:
-            print("wow")
 
 
 if __name__ == "__main__":

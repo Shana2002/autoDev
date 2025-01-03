@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import ttk
-
+import utilities.db 
 
 class CustomDialog:
     def __init__(self, parent, title="Dialog", message="Enter action details:"):
@@ -37,7 +37,7 @@ class CustomDialog:
         action_type_label.grid(row=1, column=0, sticky="w", pady=5)
 
         self.action_type_menu = ttk.Combobox(main_frame, textvariable=self.action_type_var, width=25)
-        self.action_type_menu['values'] = ["click", "send data"]
+        self.action_type_menu['values'] = ["click", "send_key"]
         self.action_type_menu.grid(row=1, column=1, pady=5)
         self.action_type_menu.current(0)
         self.action_type_menu.bind("<<ComboboxSelected>>", self.update_fields)  # Bind event
@@ -102,7 +102,7 @@ class CustomDialog:
 
     def update_fields(self, event=None):
         """Show or hide fields based on the selected action type."""
-        if self.action_type_var.get() == "send data":
+        if self.action_type_var.get() == "send_key":
             self.manual_button.grid(row=5, column=0, sticky="w", pady=5)
             self.database_button.grid(row=5, column=1, pady=5)
             self.update_value_fields()
@@ -135,11 +135,11 @@ class CustomDialog:
 
     def update_columns(self, event=None):
         """Update column options based on the selected table."""
-        table_columns = {
-            "users": ["id", "name", "email"],
-            "products": ["id", "name", "price"],
-            "orders": ["id", "user_id", "total"],
-        }
+        # table_columns = {
+        #     "users1": ["first_name", "last_name", "username", "password", "address", "email", "mobile","address_line1", "address_line2", "country", "postal_code", "city"],
+        #     "products": ["id", "name", "price"],
+        # }
+        table_columns = utilities.db.get_table()
         selected_table = self.selected_table_var.get()
         self.column_menu['values'] = table_columns.get(selected_table, [])
         if self.column_menu['values']:
@@ -147,7 +147,7 @@ class CustomDialog:
 
     def on_ok(self):
         """Collect data and close the dialog."""
-        if self.action_type_var.get() == "send data":
+        if self.action_type_var.get() == "send_key":
             value = {
                 "table": self.selected_table_var.get(),
                 "column": self.selected_column_var.get()

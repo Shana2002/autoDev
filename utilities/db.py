@@ -58,9 +58,56 @@ def createTable():
 
     print("Database 'user_details.db' with 150 user records created successfully.")
 
-def getData(table,column,row):
-    data =  (cursor.execute(f'''Select {column} From {table} WHERE rowid = {row}''').fetchone())[0]
-    conn.close()
-    return data
+def createProductTable():
+    # Create the products table
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS products (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            product_name TEXT,
+            type TEXT,
+            description TEXT,
+            price REAL
+        )
+    ''')
 
-# print(getData('users','username',3))
+    # Define some product types
+    product_types = ['Electronics', 'Clothing', 'Furniture', 'Beauty', 'Toys', 'Food', 'Books', 'Sports']
+
+    # Generate and insert 150 product records
+    for _ in range(150):
+        product_name = fake.word().capitalize() + " " + fake.word().capitalize()
+        type_ = random.choice(product_types)
+        description = fake.text(max_nb_chars=100)
+        price = round(random.uniform(10, 500), 2)
+
+        cursor.execute('''
+            INSERT INTO products (
+                product_name, type, description, price
+            ) VALUES (?, ?, ?, ?)
+        ''', (product_name, type_, description, price))
+
+    # Commit changes and close connection
+    conn.commit()
+    conn.close()
+
+    print("Database 'products.db' with 150 product records created successfully.")
+
+# table names
+
+def get_table():
+    tables_data = cursor.execute('SELECT name FROM sqlite_master WHERE type = "table"').fetchall()
+    tables_name = {}
+    for table in tables_data:
+        if table[0] != "sqlite_sequence":
+            column_data = cursor.execute(f"PRAGMA table_info({table[0]})").fetchall()
+            colums = []
+            for colum in column_data:
+                colums.append(colum[1])
+            tables_name[table[0]] = colums
+    
+    return tables_name
+            
+      
+    # print(cursor.execute("PRAGMA table_info('users')").fetchall())
+
+get_table()

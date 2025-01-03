@@ -75,6 +75,18 @@ class Main:
         btn_add = Button(root, text="Run", command=lambda: self.run_action(count_var, url_var))
         btn_add.pack(side="top", pady=10)
 
+        # save button
+        btn_add = Button(root, text="Save", command=self.add_event)
+        btn_add.place(x=600,y=20)
+
+        # load button
+        btn_add = Button(root, text="Load", command=self.add_event)
+        btn_add.place(x=650,y=20)
+
+        # setting button
+        btn_add = Button(root, text="Setting", command=self.add_event)
+        btn_add.place(x=700,y=20)
+
     def add_event(self):
         dialog = CustomDialog(root)
         result = dialog.show()

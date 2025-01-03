@@ -1,6 +1,10 @@
 from tkinter import *
+import sys
 import os
-import utilities.db
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from utilities import db
+
 
 class Settings:
     def __init__(self, parent):
@@ -22,7 +26,7 @@ class Settings:
 
     def reset_database(self):
         """Handle the database reset action."""
-        utilities.db.reset_db()
+        db.reset_db()
         self.dialog.destroy()
 
     def show_database(self):

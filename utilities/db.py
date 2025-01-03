@@ -118,7 +118,3 @@ def reset_db():
     createTable()
     createProductTable()
 
-
-    
-
-reset_db()

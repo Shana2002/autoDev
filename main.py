@@ -17,7 +17,7 @@ class Main:
         self.root = root
         self.root.geometry("800x640+0+0")
         self.root.config(bg="#23252D")
-
+        self.save_name = ""
         # Title in Window
         self.root.title("Auto Dev - Testing unit >> developed by hansaka")
         label1 = Label(
@@ -161,7 +161,8 @@ class Main:
     def save_frame(self):
         if len(self.actions)==0:
             messagebox.showerror('Error','No actions to save please add actions and save')
-        dialog = SaveBox(root,self.actions)
+            return
+        dialog = SaveBox(root,self.actions,self.save_name)
         result = dialog.show()
         
     def load_frame(self):
@@ -170,6 +171,14 @@ class Main:
             if res == 'yes':
                 dilaog = LoadBox(self.root,self.actions)
                 result = dilaog.show()
+                if isinstance(result,dict):
+                    self.actions.clear()
+                    self.actions = result["result"]
+                    self.save_name = result["name"]
+                    self.create_subframe()
+                    return
+                messagebox.showerror('Error','Something error if your saved file get damaged or saved file not like file type')
+                return
 
 
 

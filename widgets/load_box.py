@@ -49,14 +49,16 @@ class LoadBox:
         """Handle the load action."""
         selected_file = self.file_listbox.get(ACTIVE)
         if selected_file:
-            self.result = []
+            self.result = {}
+            self.res = []
             f = open(f"presets/{selected_file}","r")
             for line in f:
                 action = line.replace('\n',"")
                 convert = eval(action)
                 
-                self.result.append(convert)
-            
+                self.res.append(convert)
+            self.result["result"]=self.res
+            self.result["name"]=selected_file
             self.dialog.destroy()
             
 

@@ -2,7 +2,7 @@ from tkinter import *
 
 
 class SaveBox:
-    def __init__(self, parent,actions):
+    def __init__(self, parent,actions,name):
         self.dialog = Toplevel(parent)
         self.dialog.title("Save Preset")
         self.dialog.geometry('400x200')
@@ -12,7 +12,7 @@ class SaveBox:
         self.actions = actions
 
         # Initialize variables
-        self.save_name = StringVar()
+        self.save_name = StringVar(value=name)
         self.result = None
 
         # Center Frame for alignment
@@ -40,8 +40,8 @@ class SaveBox:
                     f.write(str(action))
                     f.write('\n')
                 f.close()
-            except:
-                pass
+            except Exception as e:
+                print(e)
             finally:
                 self.dialog.destroy()
             # file check

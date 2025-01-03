@@ -1,0 +1,1 @@
+{'function': 'click', 'type': 'xpath', 'path': 'dfsdfds', 'value': None, 'delay': 2}

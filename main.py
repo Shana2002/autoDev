@@ -164,6 +164,8 @@ class Main:
             return
         dialog = SaveBox(root,self.actions,self.save_name)
         result = dialog.show()
+        if result:
+            self.save_name = result
         
     def load_frame(self):
         if len(self.actions)>=0:

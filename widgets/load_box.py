@@ -43,7 +43,9 @@ class LoadBox:
         path = "presets"
         if not os.path.exists(path):
             os.makedirs(path)
-        return os.listdir(path)
+        file_names = os.listdir(path)
+        file_names = list(map(lambda name: name.replace('.txt',''),file_names))
+        return file_names
 
     def load(self):
         """Handle the load action."""
@@ -51,14 +53,17 @@ class LoadBox:
         if selected_file:
             self.result = {}
             self.res = []
-            f = open(f"presets/{selected_file}","r")
-            for line in f:
-                action = line.replace('\n',"")
-                convert = eval(action)
-                
-                self.res.append(convert)
-            self.result["result"]=self.res
-            self.result["name"]=selected_file
+            try :
+                f = open(f"presets/{selected_file}.txt","r")
+                for line in f:
+                    action = line.replace('\n',"")
+                    convert = eval(action)
+                    self.res.append(convert)
+                self.result["result"]=self.res
+                self.result["name"]=selected_file
+            except Exception as e:
+                print(e)
+                return self.result
             self.dialog.destroy()
             
 

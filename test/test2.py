@@ -1,4 +1,3 @@
-count = 10
-for i in range(0,count):
-    print(i)
-    i+=i
+a = ["hello","how"]
+a = list(map(lambda x: x.replace,a))
+print(a)

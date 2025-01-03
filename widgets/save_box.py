@@ -43,7 +43,7 @@ class SaveBox:
             except:
                 pass
             finally:
-                pass
+                self.dialog.destroy()
             # file check
             
         self.result = self.save_name.get()
@@ -55,25 +55,25 @@ class SaveBox:
         return self.result
 
 
-actions = [
-    {"function":"click","type":"xpath","path":'/html/body/div[1]/div/div[3]/a[1]/i',"value":"hansaka"},
-    {"function":"send_key","type":"xpath","path":'//*[@id="username"]',"value":"hansaka"},
-    {"function":"send_key","type":"xpath","path":'//*[@id="password"]',"value":"hansaka"},
-    {"function":"click","type":"xpath","path":'//*[@id="login-form"]/div[2]/div[2]/div[1]/form/input',"value":"hansaka"},
-    ]
+# actions = [
+#     {"function":"click","type":"xpath","path":'/html/body/div[1]/div/div[3]/a[1]/i',"value":"hansaka"},
+#     {"function":"send_key","type":"xpath","path":'//*[@id="username"]',"value":"hansaka"},
+#     {"function":"send_key","type":"xpath","path":'//*[@id="password"]',"value":"hansaka"},
+#     {"function":"click","type":"xpath","path":'//*[@id="login-form"]/div[2]/div[2]/div[1]/form/input',"value":"hansaka"},
+#     ]
 
 
-if __name__ == "__main__":
-    def open_dialog():
-        dialog = SaveBox(root,actions)
-        result = dialog.show()
-        if result:
-            print("Action Result:", result)
+# if __name__ == "__main__":
+#     def open_dialog():
+#         dialog = SaveBox(root,actions)
+#         result = dialog.show()
+#         if result:
+#             print("Action Result:", result)
 
-    root = Tk()
-    root.geometry("300x200")
+#     root = Tk()
+#     root.geometry("300x200")
 
-    open_dialog_btn = Button(root, text="Open Dialog", command=open_dialog, font=("Helvetica", 12), bg="#2196F3", fg="white")
-    open_dialog_btn.pack(pady=50)
+#     open_dialog_btn = Button(root, text="Open Dialog", command=open_dialog, font=("Helvetica", 12), bg="#2196F3", fg="white")
+#     open_dialog_btn.pack(pady=50)
 
-    root.mainloop()
+#     root.mainloop()

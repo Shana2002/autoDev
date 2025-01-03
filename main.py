@@ -1,7 +1,12 @@
 from tkinter import *
-from tkinter import ttk
+from tkinter import ttk,messagebox
 from utilities.custom_dialog import CustomDialog
 from run import Run
+from widgets.save_box import SaveBox
+from widgets.load_box import LoadBox
+from widgets.setting_box import Settings
+
+
 
 
 class Main:
@@ -76,11 +81,11 @@ class Main:
         btn_add.pack(side="top", pady=10)
 
         # save button
-        btn_add = Button(root, text="Save", command=self.add_event)
+        btn_add = Button(root, text="Save", command=self.save_frame)
         btn_add.place(x=600,y=20)
 
         # load button
-        btn_add = Button(root, text="Load", command=self.add_event)
+        btn_add = Button(root, text="Load", command=self.load_frame)
         btn_add.place(x=650,y=20)
 
         # setting button
@@ -152,6 +157,20 @@ class Main:
     def run_action(self,count_var,url_var):
         if count_var.get()>0 and url_var.get()!="" and len(self.actions)>0:
             run_status = Run(self.root,count_var.get(),url_var.get(),self.actions)
+
+    def save_frame(self):
+        if len(self.actions)==0:
+            messagebox.showerror('Error','No actions to save please add actions and save')
+        dialog = SaveBox(root,self.actions)
+        result = dialog.show()
+        
+    def load_frame(self):
+        if len(self.actions)>=0:
+            res = messagebox.askquestion('Do you want Proceeed?','Alredy you add actions when you load your previous action will delete , Do you want proceed')
+            if res == 'yes':
+                dilaog = LoadBox(self.root,self.actions)
+                result = dilaog.show()
+
 
 
 if __name__ == "__main__":

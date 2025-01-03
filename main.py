@@ -89,7 +89,7 @@ class Main:
         btn_add.place(x=650,y=20)
 
         # setting button
-        btn_add = Button(root, text="Setting", command=self.add_event)
+        btn_add = Button(root, text="Setting", command=self.show_setting)
         btn_add.place(x=700,y=20)
 
     def add_event(self):
@@ -180,6 +180,9 @@ class Main:
                 messagebox.showerror('Error','Something error if your saved file get damaged or saved file not like file type')
                 return
 
+    def show_setting(self):
+        setting = Settings(self.root)
+        
 
 
 if __name__ == "__main__":

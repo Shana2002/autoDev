@@ -34,14 +34,14 @@ class Settings:
         os.system("start explorer .")  # Open current directory as a placeholder for showing database
 
 # Example usage
-if __name__ == "__main__":
-    def open_settings():
-        settings = Settings(root)
+# if __name__ == "__main__":
+#     def open_settings():
+#         settings = Settings(root)
 
-    root = Tk()
-    root.geometry("300x200")
+#     root = Tk()
+#     root.geometry("300x200")
 
-    settings_btn = Button(root, text="Settings", command=open_settings, font=("Helvetica", 12), bg="#FF9800", fg="white")
-    settings_btn.pack(pady=10)
+#     settings_btn = Button(root, text="Settings", command=open_settings, font=("Helvetica", 12), bg="#FF9800", fg="white")
+#     settings_btn.pack(pady=10)
 
-    root.mainloop()
+#     root.mainloop()

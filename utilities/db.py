@@ -1,7 +1,7 @@
 import sqlite3
 import random
 import faker
-
+import os
 # Initialize Faker for generating random data
 fake = faker.Faker()
 
@@ -30,7 +30,7 @@ def createTable():
     ''')
 
     # Generate and insert 150 user records
-    for _ in range(150):
+    for _ in range(1000):
         first_name = fake.first_name()
         last_name = fake.last_name()
         username = f"{first_name.lower()}.{last_name.lower()}{random.randint(10, 99)}"
@@ -54,9 +54,9 @@ def createTable():
 
     # Commit changes and close connection
     conn.commit()
-    conn.close()
+    
 
-    print("Database 'user_details.db' with 150 user records created successfully.")
+    print("Database 'user_details.db' with 1000 user records created successfully.")
 
 def createProductTable():
     # Create the products table
@@ -74,7 +74,7 @@ def createProductTable():
     product_types = ['Electronics', 'Clothing', 'Furniture', 'Beauty', 'Toys', 'Food', 'Books', 'Sports']
 
     # Generate and insert 150 product records
-    for _ in range(150):
+    for _ in range(1000):
         product_name = fake.word().capitalize() + " " + fake.word().capitalize()
         type_ = random.choice(product_types)
         description = fake.text(max_nb_chars=100)
@@ -88,9 +88,9 @@ def createProductTable():
 
     # Commit changes and close connection
     conn.commit()
-    conn.close()
+    
 
-    print("Database 'products.db' with 150 product records created successfully.")
+    print("Database 'products.db' with 1000 product records created successfully.")
 
 # table names
 
@@ -110,4 +110,15 @@ def get_table():
       
     # print(cursor.execute("PRAGMA table_info('users')").fetchall())
 
-get_table()
+
+
+def reset_db():
+    cursor.execute('drop table users')
+    cursor.execute('drop table products')
+    createTable()
+    createProductTable()
+
+
+    
+
+reset_db()

@@ -1,4 +1,4 @@
-from classes.webdriver import Webdriver
+from models.webdriver import Webdriver
 
 
 actions = [

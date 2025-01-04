@@ -1,6 +1,6 @@
 from tkinter import *
 import threading
-from classes.webdriver import Webdriver
+from models.webdriver import Webdriver
 import sqlite3
 
 class Run:

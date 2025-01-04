@@ -1,5 +1,6 @@
 import customtkinter
 from widgets.add_action import AddAction
+from widgets.load_box import LoadBox
 
 customtkinter.set_appearance_mode('dark')
 customtkinter.set_default_color_theme('blue')
@@ -10,6 +11,7 @@ class App(customtkinter.CTk):
         # configure window
         self.title("Auto Dev")
         self.geometry("800x600")
+        self.actions = []
         
         # Configure grid layout for the root window
         self.columnconfigure(0, weight=1)  # Center column expands
@@ -60,7 +62,7 @@ class App(customtkinter.CTk):
         self.save_button.grid(row=1, column=0, pady=10, padx=10)
 
         # Load Button
-        self.load_button = customtkinter.CTkButton(self.subframe, text="Load", width=200, height=40)
+        self.load_button = customtkinter.CTkButton(self.subframe, text="Load", width=200, height=40,command=self.load_presets)
         self.load_button.grid(row=2, column=0, pady=10, padx=10)
 
         # setting Button
@@ -122,6 +124,11 @@ class App(customtkinter.CTk):
     def add_action_tab(self):
         action = AddAction(self,1)
         result = action.show()
+    
+    def load_presets(self):
+        action = LoadBox(self,self.actions)
+        result = action.show()
+        print(result)
 
 if __name__ == "__main__":
     app = App()

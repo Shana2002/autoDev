@@ -40,10 +40,83 @@ class App(customtkinter.CTk):
         self.action_frame = customtkinter.CTkScrollableFrame(self.main_frame,width=480 , height=370)
         self.action_frame.grid(row=1,column=0,pady=10,padx=5)
 
-        # sub frame
-        self.subframe = customtkinter.CTkFrame(self.main_frame,width=215,height=430)
-        self.subframe.grid(row=0,column=1,rowspan=2,pady=10,padx=5)
+        # Subframe
+        self.subframe = customtkinter.CTkFrame(self.main_frame, width=215, height=430)
+        self.subframe.grid(row=0, column=1, rowspan=2, pady=10, padx=5)
+        self.subframe.grid_propagate(False)
+
+        # Configure grid for subframe
+        self.subframe.rowconfigure(0, weight=10)  # Give the 'Run' button more space
+        self.subframe.rowconfigure((1, 2, 3), weight=1)  # Equal weight for Save, Load, and Log
+        self.subframe.columnconfigure(0, weight=1)  # Center-align buttons
+
+        # Run Button (larger size)
+        self.run_button = customtkinter.CTkButton(self.subframe, text="Run", width=200, height=40)
+        self.run_button.grid(row=0, column=0, pady=10, padx=10)
+
+        # Save Button
+        self.save_button = customtkinter.CTkButton(self.subframe, text="Save", width=200, height=40)
+        self.save_button.grid(row=1, column=0, pady=10, padx=10)
+
+        # Load Button
+        self.load_button = customtkinter.CTkButton(self.subframe, text="Load", width=200, height=40)
+        self.load_button.grid(row=2, column=0, pady=10, padx=10)
+
+        # setting Button
+        self.setting_button = customtkinter.CTkButton(self.subframe, text="Setting", width=200, height=40)
+        self.setting_button.grid(row=3, column=0, pady=10, padx=10)
+
+
+
+
+        for x in range(1, 10):
+            self.create_actions()
         
+        
+    def create_actions(self):
+        self.action_card = customtkinter.CTkFrame(self.action_frame, width=480, height=160)
+        self.action_card.pack(pady=5)
+        self.action_card.grid_propagate(False)
+
+        # Card title
+        title = customtkinter.CTkLabel(
+            self.action_card,
+            text="Click Login Button ",
+            font=customtkinter.CTkFont(size=15, weight="bold"),
+            justify="left",
+            anchor="w"
+        )
+        title.grid(row=0, column=0, columnspan=4, sticky="w", padx=10, pady=5)
+
+        # Action Details
+        do_function = customtkinter.CTkLabel(self.action_card, text="Action: Click")
+        do_function.grid(row=1, column=0, sticky="w", padx=10, pady=2)
+
+        path = customtkinter.CTkLabel(self.action_card, text="Path: /login/button")
+        path.grid(row=2, column=0, sticky="w", padx=10, pady=2)
+
+        # Value Field
+        value_label = customtkinter.CTkLabel(self.action_card, text="Value:")
+        value_label.grid(row=3, column=0, sticky="w", padx=10, pady=5)
+
+        # Action Buttons
+        edit_button = customtkinter.CTkButton(self.action_card, text="Edit", width=70)
+        edit_button.grid(row=1, column=2, padx=5, pady=5)
+
+        delete_button = customtkinter.CTkButton(self.action_card, text="Delete", width=70)
+        delete_button.grid(row=1, column=3, padx=5, pady=5)
+
+        up_button = customtkinter.CTkButton(self.action_card, text="Up", width=70)
+        up_button.grid(row=2, column=2, padx=5, pady=5)
+
+        down_button = customtkinter.CTkButton(self.action_card, text="Down", width=70)
+        down_button.grid(row=2, column=3, padx=5, pady=5)
+
+        # Adjust the grid proportions within the card
+        self.action_card.columnconfigure(0, weight=1)
+        self.action_card.columnconfigure(1, weight=1)
+        self.action_card.columnconfigure(2, weight=0)
+        self.action_card.columnconfigure(3, weight=0)
 
 if __name__ == "__main__":
     app = App()

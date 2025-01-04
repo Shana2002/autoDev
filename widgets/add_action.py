@@ -8,6 +8,9 @@ class AddAction(customtkinter.CTkToplevel):
         self.geometry("600x500")
         self.title("Add Action")
 
+        # table details
+        self.db_tables = utilities.db.get_table()
+
         # Variables for input
         self.title_var = customtkinter.StringVar(value=f"Action {action+1}")
         self.action_type_var = customtkinter.StringVar(value="click")
@@ -16,9 +19,9 @@ class AddAction(customtkinter.CTkToplevel):
         self.value_var = customtkinter.StringVar()
         self.custome_time_var = customtkinter.IntVar(value=2)
         self.radio_type = customtkinter.IntVar(value=1)
-        self.table_var = customtkinter.StringVar(value=list(utilities.db.get_table().keys())[0])
-        self.colum_var = customtkinter.StringVar()
-        self.column_value = []
+        self.table_var = customtkinter.StringVar(value=list(self.db_tables.keys())[0])
+        self.colum_var = customtkinter.StringVar(value=list(self.db_tables[self.table_var.get()])[0])
+        self.column_value = list(self.db_tables[self.table_var.get()])
         # Result variable
         self.result = None
 
@@ -66,28 +69,23 @@ class AddAction(customtkinter.CTkToplevel):
 
         # table selector
         self.table_lable = customtkinter.CTkLabel(self, text="Select Table :")
-        self.table_selector = customtkinter.CTkOptionMenu(self, variable=self.table_var, values=list(utilities.db.get_table().keys()))
+        self.table_selector = customtkinter.CTkOptionMenu(self, variable=self.table_var, values=list(utilities.db.get_table().keys()),command=self.table_column_update)
         # column selector
         self.column_label = customtkinter.CTkLabel(self, text="Select Column :")
         self.column_selector = customtkinter.CTkOptionMenu(self, variable=self.colum_var, values=self.column_value)
 
-    def create_widgets(self):
-        """Create and layout UI components."""
-        # Value Entry
-        self.value_label = customtkinter.CTkLabel(self, text="Enter Value:")
-        self.value_label.grid(row=5, column=0, pady=5, padx=5)
-        self.value_entry = customtkinter.CTkEntry(self, textvariable=self.value_var)
-        self.value_entry.grid(row=5, column=1, pady=5, padx=5)
 
         # Buttons
         button_frame = customtkinter.CTkFrame(self)
-        button_frame.grid(row=6, column=0, columnspan=2, pady=20)
+        button_frame.grid(row=9, column=0, columnspan=2, pady=20)
 
         self.ok_button = customtkinter.CTkButton(button_frame, text="OK", command=self.on_ok)
         self.ok_button.pack(side="left", padx=10)
 
         self.cancel_button = customtkinter.CTkButton(button_frame, text="Cancel", command=self.on_cancel)
         self.cancel_button.pack(side="left", padx=10)
+
+        
 
     def update_fields(self,choice):
         if choice=="send_key":
@@ -97,6 +95,12 @@ class AddAction(customtkinter.CTkToplevel):
         else:
             self.radiobutton_value.grid_forget()
             self.radiobutton_database.grid_forget()
+            self.table_lable.grid_forget()
+            self.table_selector.grid_forget()
+            self.column_label.grid_forget()
+            self.column_selector.grid_forget()
+            self.value_label.grid_forget()
+            self.value_entry.grid_forget()
 
     def radiobutton_event(self):
         if self.radio_type.get() == 1:
@@ -114,7 +118,14 @@ class AddAction(customtkinter.CTkToplevel):
             self.value_label.grid_forget()
             self.value_entry.grid_forget()
 
-        
+    def table_column_update(self,choice):
+        self.column_value = list(self.db_tables[choice])
+        self.column_selector.configure(values=self.column_value)
+        if self.column_value: 
+            self.colum_var.set(self.column_value[0])
+        else:
+            self.colum_var.set("")
+
 
     def on_ok(self):
         """Collect data and close the dialog."""

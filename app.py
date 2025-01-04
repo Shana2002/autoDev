@@ -1,4 +1,5 @@
 import customtkinter
+from widgets.add_action import AddAction
 
 customtkinter.set_appearance_mode('dark')
 customtkinter.set_default_color_theme('blue')
@@ -33,7 +34,7 @@ class App(customtkinter.CTk):
         # self.main_frame.grid_rowconfigure((0, 1, 2), weight=1)
 
         # add button
-        self.add_btn  = customtkinter.CTkButton(self.main_frame,text="Add",width=500)
+        self.add_btn  = customtkinter.CTkButton(self.main_frame,text="Add",width=500,command=self.add_action_tab)
         self.add_btn.grid(row=0,column=0,pady=10,padx=5)
 
         # action frame
@@ -117,6 +118,10 @@ class App(customtkinter.CTk):
         self.action_card.columnconfigure(1, weight=1)
         self.action_card.columnconfigure(2, weight=0)
         self.action_card.columnconfigure(3, weight=0)
+
+    def add_action_tab(self):
+        action = AddAction(self,1)
+        result = action.show()
 
 if __name__ == "__main__":
     app = App()

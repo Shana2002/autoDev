@@ -1,5 +1,5 @@
 import customtkinter
-
+import utilities.db
 
 class AddAction(customtkinter.CTkToplevel):
     def __init__(self, master, action):
@@ -15,7 +15,10 @@ class AddAction(customtkinter.CTkToplevel):
         self.path_var = customtkinter.StringVar()
         self.value_var = customtkinter.StringVar()
         self.custome_time_var = customtkinter.IntVar(value=2)
-
+        self.radio_type = customtkinter.IntVar(value=1)
+        self.table_var = customtkinter.StringVar(value=list(utilities.db.get_table().keys())[0])
+        self.colum_var = customtkinter.StringVar()
+        self.column_value = []
         # Result variable
         self.result = None
 
@@ -52,7 +55,6 @@ class AddAction(customtkinter.CTkToplevel):
         self.delay_entry.grid(row=4, column=1, pady=5, padx=5)
 
         # radio button
-        self.radio_type = customtkinter.IntVar(value=0)
         self.radiobutton_value = customtkinter.CTkRadioButton(self, text="Value",
                                                     command=self.radiobutton_event, variable= self.radio_type, value=1)
         self.radiobutton_database = customtkinter.CTkRadioButton(self, text="Database",
@@ -61,6 +63,13 @@ class AddAction(customtkinter.CTkToplevel):
         # Value Entry
         self.value_label = customtkinter.CTkLabel(self, text="Enter Value:")
         self.value_entry = customtkinter.CTkEntry(self, textvariable=self.value_var)
+
+        # table selector
+        self.table_lable = customtkinter.CTkLabel(self, text="Select Table :")
+        self.table_selector = customtkinter.CTkOptionMenu(self, variable=self.table_var, values=list(utilities.db.get_table().keys()))
+        # column selector
+        self.column_label = customtkinter.CTkLabel(self, text="Select Column :")
+        self.column_selector = customtkinter.CTkOptionMenu(self, variable=self.colum_var, values=self.column_value)
 
     def create_widgets(self):
         """Create and layout UI components."""
@@ -84,6 +93,7 @@ class AddAction(customtkinter.CTkToplevel):
         if choice=="send_key":
             self.radiobutton_value.grid(row=5, column=0, pady=5, padx=5)
             self.radiobutton_database.grid(row=5, column=1, pady=5, padx=5)
+            self.radiobutton_event()
         else:
             self.radiobutton_value.grid_forget()
             self.radiobutton_database.grid_forget()
@@ -92,6 +102,17 @@ class AddAction(customtkinter.CTkToplevel):
         if self.radio_type.get() == 1:
             self.value_label.grid(row=6, column=0, pady=5, padx=5)
             self.value_entry.grid(row=6, column=1, pady=5, padx=5)
+            self.table_lable.grid_forget()
+            self.table_selector.grid_forget()
+            self.column_label.grid_forget()
+            self.column_selector.grid_forget()
+        else :
+            self.table_lable.grid(row=6, column=0, pady=5, padx=5)
+            self.table_selector.grid(row=6, column=1, pady=5, padx=5)
+            self.column_label.grid(row=7, column=0, pady=5, padx=5)
+            self.column_selector.grid(row=7, column=1, pady=5, padx=5)
+            self.value_label.grid_forget()
+            self.value_entry.grid_forget()
 
         
 

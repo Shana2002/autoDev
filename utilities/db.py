@@ -117,4 +117,3 @@ def reset_db():
     cursor.execute('drop table products')
     createTable()
     createProductTable()
-

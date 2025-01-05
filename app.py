@@ -12,12 +12,16 @@ class App(customtkinter.CTk):
         # configure window
         self.title("Auto Dev")
         self.geometry("800x600")
-        self.actions = []
         
         # Configure grid layout for the root window
         self.columnconfigure(0, weight=1)  # Center column expands
         self.rowconfigure(0, weight=1)     # Name label row
         self.rowconfigure(1, weight=1)     # Main frame row
+
+        # Variables 
+        self.actions = []
+        self.name = ''
+        self.url_var = customtkinter.StringVar()
 
         # name label
         name_label = customtkinter.CTkLabel(
@@ -27,9 +31,26 @@ class App(customtkinter.CTk):
         )
         name_label.grid(column=0, row=0, pady=10)
 
+        # url frame
+        self.url_frame = customtkinter.CTkFrame(self, width=750, height=50)
+        self.url_frame.grid(column=0, row=1, pady=5, sticky="n")
+        self.url_frame.grid_propagate(False)
+
+        # Configure grid layout for centering
+        self.url_frame.grid_columnconfigure(0, weight=1)
+        self.url_frame.grid_columnconfigure(1, weight=1)
+        self.url_frame.grid_rowconfigure(0, weight=1)
+
+        self.url_label = customtkinter.CTkLabel(self.url_frame, text="Enter Url :")
+        self.url_label.grid(row=0, column=0, padx=10, pady=5, sticky="e")
+
+        self.url_entry = customtkinter.CTkEntry(self.url_frame, textvariable=self.url_var, width=600)
+        self.url_entry.grid(column=1, row=0, padx=10, pady=5, sticky="w")
+
+
         # main frame design
         self.main_frame = customtkinter.CTkFrame(self, width=750, height=450)
-        self.main_frame.grid(column=0, row=1, pady=20, sticky="n")  # Adjusted alignment
+        self.main_frame.grid(column=0, row=2, pady=20, sticky="n")  # Adjusted alignment
 
         # Center alignment for the main_frame
         self.main_frame.grid_propagate(False)  # Prevent resizing to contents

@@ -2,6 +2,7 @@ import customtkinter
 from widgets.add_action import AddAction
 from widgets.load_box import LoadBox
 from widgets.save_box import SaveBox
+from widgets.strart_actions import StartAction
 
 customtkinter.set_appearance_mode('dark')
 customtkinter.set_default_color_theme('blue')
@@ -76,7 +77,7 @@ class App(customtkinter.CTk):
         self.subframe.columnconfigure(0, weight=1)  # Center-align buttons
 
         # Run Button (larger size)
-        self.run_button = customtkinter.CTkButton(self.subframe, text="Run", width=200, height=40)
+        self.run_button = customtkinter.CTkButton(self.subframe, text="Run", width=200, height=40,command=self.run_actions)
         self.run_button.grid(row=0, column=0, pady=10, padx=10)
 
         # Save Button
@@ -176,6 +177,10 @@ class App(customtkinter.CTk):
         if result:
             self.actions[i]=result
             self.update_action()
+
+    def run_actions(self,):
+        action = StartAction(self)
+
 
     def delete_action(self,i):
         self.actions.pop(i)

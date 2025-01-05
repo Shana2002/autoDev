@@ -2,7 +2,7 @@ import customtkinter
 import utilities.db
 
 class AddAction(customtkinter.CTkToplevel):
-    def __init__(self, master, action):
+    def __init__(self, master, action , edit_action ={},index=0):
         super().__init__(master)
         self.master = master
         self.geometry("600x500")
@@ -138,6 +138,7 @@ class AddAction(customtkinter.CTkToplevel):
             value = None
 
         self.result = {
+            "title":self.title_var.get(),
             "function": self.action_type_var.get(),
             "type": self.path_type_var.get(),
             "path": self.path_var.get(),

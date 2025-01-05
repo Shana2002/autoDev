@@ -12,12 +12,7 @@ class App(customtkinter.CTk):
         # configure window
         self.title("Auto Dev")
         self.geometry("800x600")
-        self.actions = [
-    {"title":"action1","function":"click","type":"xpath","path":'/html/body/div[1]/div/div[3]/a[1]/i',"value":"hansaka"},
-    {"title":"action2","function":"send_key","type":"xpath","path":'//*[@id="username"]',"value":"hansaka"},
-    {"title":"action3","function":"send_key","type":"xpath","path":'//*[@id="password"]',"value":"hansaka"},
-    {"title":"action4","function":"click","type":"xpath","path":'//*[@id="login-form"]/div[2]/div[2]/div[1]/form/input',"value":"hansaka"},
-    ]
+        self.actions = []
         
         # Configure grid layout for the root window
         self.columnconfigure(0, weight=1)  # Center column expands
@@ -85,11 +80,14 @@ class App(customtkinter.CTk):
                 widget.destroy()
             
             for i, action in enumerate(self.actions):
-                self.action_card_view(action,i)
+                height = 180
+                if action["function"]=="click": 
+                    height = 145
+                self.action_card_view(action,i,height)
         
         
-    def action_card_view(self,action,i):
-        self.action_card = customtkinter.CTkFrame(self.action_frame, width=480, height=180)
+    def action_card_view(self,action,i,height):
+        self.action_card = customtkinter.CTkFrame(self.action_frame, width=480, height=height)
         self.action_card.pack(pady=3)
         self.action_card.grid_propagate(False)
 
@@ -113,9 +111,14 @@ class App(customtkinter.CTk):
         path = customtkinter.CTkLabel(self.action_card, text=f"Path: {action["path"]}")
         path.grid(row=3, column=0, sticky="w", padx=10, pady=2)
 
-        # Value Field
-        value_label = customtkinter.CTkLabel(self.action_card, text="Value:")
-        value_label.grid(row=4, column=0, sticky="w", padx=10, pady=5)
+        if action["function"]== 'send_key':
+            # Value Field
+            if isinstance(action["value"],dict):
+                value_label = customtkinter.CTkLabel(self.action_card, text=f"Table: {action["value"]["table"]} -> Column {action["value"]["column"]}")
+                value_label.grid(row=4, column=0, sticky="w", padx=10, pady=5)
+            else:
+                value_label = customtkinter.CTkLabel(self.action_card, text=f"Value: {action["value"]}")
+                value_label.grid(row=4, column=0, sticky="w", padx=10, pady=5)
 
         # Action Buttons
         edit_button = customtkinter.CTkButton(self.action_card, text="Edit", width=70)
@@ -124,11 +127,13 @@ class App(customtkinter.CTk):
         delete_button = customtkinter.CTkButton(self.action_card, text="Delete", width=70)
         delete_button.grid(row=1, column=3, padx=5, pady=5)
 
-        up_button = customtkinter.CTkButton(self.action_card, text="Up", width=70)
-        up_button.grid(row=2, column=2, padx=5, pady=5)
+        if i>0:
+            up_button = customtkinter.CTkButton(self.action_card, text="Up", width=70)
+            up_button.grid(row=2, column=2, padx=5, pady=5)
 
-        down_button = customtkinter.CTkButton(self.action_card, text="Down", width=70)
-        down_button.grid(row=2, column=3, padx=5, pady=5)
+        if i < len(self.actions) - 1:
+            down_button = customtkinter.CTkButton(self.action_card, text="Down", width=70)
+            down_button.grid(row=2, column=3, padx=5, pady=5)
 
         # Adjust the grid proportions within the card
         self.action_card.columnconfigure(0, weight=1)
@@ -137,8 +142,11 @@ class App(customtkinter.CTk):
         self.action_card.columnconfigure(3, weight=0)
 
     def add_action_tab(self):
-        action = AddAction(self,1)
+        action = AddAction(self,len(self.actions))
         result = action.show()
+        if result:
+            self.actions.append(result)
+            self.update_action()
     
     def load_presets(self):
         action = LoadBox(self,self.actions)

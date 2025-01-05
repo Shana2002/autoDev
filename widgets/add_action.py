@@ -2,7 +2,7 @@ import customtkinter
 import utilities.db
 
 class AddAction(customtkinter.CTkToplevel):
-    def __init__(self, master, action , edit_action ={},index=0):
+    def __init__(self, master, action , edit_action =None,index=0):
         super().__init__(master)
         self.master = master
         self.geometry("600x500")
@@ -24,7 +24,8 @@ class AddAction(customtkinter.CTkToplevel):
         self.column_value = list(self.db_tables[self.table_var.get()])
         # Result variable
         self.result = None
-
+        self.update_action = False
+        self.update_edit(edit_action)
         # Main UI Layout
         
         # Title
@@ -85,7 +86,28 @@ class AddAction(customtkinter.CTkToplevel):
         self.cancel_button = customtkinter.CTkButton(button_frame, text="Cancel", command=self.on_cancel)
         self.cancel_button.pack(side="left", padx=10)
 
-        
+        self.update_fields(self.action_type_var.get())
+
+    def update_edit(self,edit):
+        if edit:
+            self.update_action=True
+            self.title_var.set(edit["title"])
+            self.action_type_var.set(edit["function"])
+            self.path_type_var.set(edit["type"])
+            self.path_var.set(edit["path"]) 
+            self.custome_time_var.set(edit["delay"])
+
+            if edit["function"]=="send_key":
+                if  isinstance(edit["value"],dict):
+                    self.radio_type.set(2)
+                    self.table_var.set(edit["value"]["table"]) 
+                    self.colum_var.set(edit["value"]["column"])
+                else:
+                    self.radio_type.set(1)
+                    self.value_var.set(edit["value"])
+            
+            
+            
 
     def update_fields(self,choice):
         if choice=="send_key":
@@ -146,6 +168,8 @@ class AddAction(customtkinter.CTkToplevel):
             "delay": self.custome_time_var.get(),
         }
         self.destroy()
+
+    
 
     def on_cancel(self):
         """Cancel and close the dialog."""

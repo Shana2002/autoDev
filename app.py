@@ -95,11 +95,12 @@ class App(customtkinter.CTk):
 
 
     def update_action(self):
+
+        # Clear the main_frame children before adding new ones
+        for widget in self.action_frame.winfo_children():
+            widget.destroy()
+
         if self.actions:
-            # Clear the main_frame children before adding new ones
-            for widget in self.action_frame.winfo_children():
-                widget.destroy()
-            
             for i, action in enumerate(self.actions):
                 height = 180
                 if action["function"]=="click": 
@@ -142,10 +143,10 @@ class App(customtkinter.CTk):
                 value_label.grid(row=4, column=0, sticky="w", padx=10, pady=5)
 
         # Action Buttons
-        edit_button = customtkinter.CTkButton(self.action_card, text="Edit", width=70)
+        edit_button = customtkinter.CTkButton(self.action_card, text="Edit", width=70,command=lambda a=action,i=i: self.edit_action(a,i))
         edit_button.grid(row=1, column=2, padx=5, pady=5)
 
-        delete_button = customtkinter.CTkButton(self.action_card, text="Delete", width=70)
+        delete_button = customtkinter.CTkButton(self.action_card, text="Delete", width=70,command= lambda i=i:self.delete_action(i))
         delete_button.grid(row=1, column=3, padx=5, pady=5)
 
         if i>0:
@@ -168,6 +169,17 @@ class App(customtkinter.CTk):
         if result:
             self.actions.append(result)
             self.update_action()
+
+    def edit_action(self,action,i):
+        action = AddAction(self,len(self.actions),edit_action=action)
+        result = action.show()
+        if result:
+            self.actions[i]=result
+            self.update_action()
+
+    def delete_action(self,i):
+        self.actions.pop(i)
+        self.update_action()
     
     def load_presets(self):
         action = LoadBox(self,self.actions)

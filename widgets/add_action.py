@@ -129,11 +129,19 @@ class AddAction(customtkinter.CTkToplevel):
 
     def on_ok(self):
         """Collect data and close the dialog."""
+        if self.action_type_var.get() == "send_key":
+            value = {
+                "table": self.table_var.get(),
+                "column": self.colum_var.get()
+            } if self.radio_type.get()==2 else self.value_var.get()
+        else:
+            value = None
+
         self.result = {
             "function": self.action_type_var.get(),
             "type": self.path_type_var.get(),
             "path": self.path_var.get(),
-            "value": self.value_var.get(),
+            "value": value,
             "delay": self.custome_time_var.get(),
         }
         self.destroy()

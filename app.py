@@ -1,6 +1,7 @@
 import customtkinter
 from widgets.add_action import AddAction
 from widgets.load_box import LoadBox
+from widgets.save_box import SaveBox
 
 customtkinter.set_appearance_mode('dark')
 customtkinter.set_default_color_theme('blue')
@@ -11,7 +12,12 @@ class App(customtkinter.CTk):
         # configure window
         self.title("Auto Dev")
         self.geometry("800x600")
-        self.actions = []
+        self.actions = [
+    {"title":"action1","function":"click","type":"xpath","path":'/html/body/div[1]/div/div[3]/a[1]/i',"value":"hansaka"},
+    {"title":"action2","function":"send_key","type":"xpath","path":'//*[@id="username"]',"value":"hansaka"},
+    {"title":"action3","function":"send_key","type":"xpath","path":'//*[@id="password"]',"value":"hansaka"},
+    {"title":"action4","function":"click","type":"xpath","path":'//*[@id="login-form"]/div[2]/div[2]/div[1]/form/input',"value":"hansaka"},
+    ]
         
         # Configure grid layout for the root window
         self.columnconfigure(0, weight=1)  # Center column expands
@@ -58,7 +64,7 @@ class App(customtkinter.CTk):
         self.run_button.grid(row=0, column=0, pady=10, padx=10)
 
         # Save Button
-        self.save_button = customtkinter.CTkButton(self.subframe, text="Save", width=200, height=40)
+        self.save_button = customtkinter.CTkButton(self.subframe, text="Save", width=200, height=40,command=self.save_dailog)
         self.save_button.grid(row=1, column=0, pady=10, padx=10)
 
         # Load Button
@@ -69,38 +75,47 @@ class App(customtkinter.CTk):
         self.setting_button = customtkinter.CTkButton(self.subframe, text="Setting", width=200, height=40)
         self.setting_button.grid(row=3, column=0, pady=10, padx=10)
 
+        self.update_action()
 
 
-
-        for x in range(1, 10):
-            self.create_actions()
+    def update_action(self):
+        if self.actions:
+            # Clear the main_frame children before adding new ones
+            for widget in self.action_frame.winfo_children():
+                widget.destroy()
+            
+            for i, action in enumerate(self.actions):
+                self.action_card_view(action,i)
         
         
-    def create_actions(self):
-        self.action_card = customtkinter.CTkFrame(self.action_frame, width=480, height=160)
-        self.action_card.pack(pady=5)
+    def action_card_view(self,action,i):
+        self.action_card = customtkinter.CTkFrame(self.action_frame, width=480, height=180)
+        self.action_card.pack(pady=3)
         self.action_card.grid_propagate(False)
 
         # Card title
         title = customtkinter.CTkLabel(
             self.action_card,
-            text="Click Login Button ",
+            text=action['title'],
             font=customtkinter.CTkFont(size=15, weight="bold"),
             justify="left",
             anchor="w"
         )
-        title.grid(row=0, column=0, columnspan=4, sticky="w", padx=10, pady=5)
+        title.grid(row=0, column=0, columnspan=4, sticky="w", padx=10, pady=3)
 
         # Action Details
-        do_function = customtkinter.CTkLabel(self.action_card, text="Action: Click")
+        do_function = customtkinter.CTkLabel(self.action_card, text=f"Action: {action["function"]}")
         do_function.grid(row=1, column=0, sticky="w", padx=10, pady=2)
 
-        path = customtkinter.CTkLabel(self.action_card, text="Path: /login/button")
+        path = customtkinter.CTkLabel(self.action_card, text=f"Type: {action["type"]}")
         path.grid(row=2, column=0, sticky="w", padx=10, pady=2)
+
+        path = customtkinter.CTkLabel(self.action_card, text=f"Path: {action["path"]}")
+        path.grid(row=3, column=0, sticky="w", padx=10, pady=2)
 
         # Value Field
         value_label = customtkinter.CTkLabel(self.action_card, text="Value:")
-        value_label.grid(row=3, column=0, sticky="w", padx=10, pady=5)
+        value_label.grid(row=4, column=0, sticky="w", padx=10, pady=5)
 
         # Action Buttons
         edit_button = customtkinter.CTkButton(self.action_card, text="Edit", width=70)
@@ -129,6 +144,10 @@ class App(customtkinter.CTk):
         action = LoadBox(self,self.actions)
         result = action.show()
         print(result)
+
+    def save_dailog(self):
+        action = SaveBox(self,self.actions,'')
+        action.show()
 
 if __name__ == "__main__":
     app = App()

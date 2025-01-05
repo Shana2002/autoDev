@@ -1,17 +1,22 @@
 import customtkinter as ctk
+import threading
+from models.webdriver import Webdriver
+import sqlite3
 
 class StartAction:
-    def __init__(self, parent):
-        self.runner = ctk.CTkToplevel(parent)
+    def __init__(self, master):
+        self.runner = ctk.CTkToplevel(master)
         self.runner.title("Running...")
         self.runner.geometry('500x400')  # Set window size to 500x400
-        self.runner.transient(parent)
+        self.runner.transient(master)
         self.runner.grab_set()
         self.runner.resizable(False, False)
+        
 
         # Variables
         self.time_var = ctk.StringVar(value="00:00:00")
         self.est_time_var = ctk.StringVar(value="00:00:00")
+        self.status_var = ctk.StringVar(value="Starting...")
 
         # Configure the grid layout of the window for centering
         self.runner.grid_rowconfigure(0, weight=1)  # Center vertically
@@ -25,7 +30,7 @@ class StartAction:
         self.frame.grid_columnconfigure(0, weight=1)
 
         # Status Label (above progress bar)
-        self.status_label = ctk.CTkLabel(self.frame, text="Click hello world data hiii", font=("Arial", 14))
+        self.status_label = ctk.CTkLabel(self.frame, textvariable=self.status_var, font=("Arial", 14))
         self.status_label.grid(row=0, column=0, pady=5)
 
         # Progress Bar
@@ -56,8 +61,46 @@ class StartAction:
         # Cancel Button
         self.pause_button = ctk.CTkButton(self.frame, text="Cancel")
         self.pause_button.grid(row=4, column=0, pady=15)
+        self.start_action(master)
 
-# Example usage
-# root = ctk.CTk()
-# app = StartAction(root)
-# root.mainloop()
+    def start_action(self,master):
+        thread = threading.Thread(target=self.loop, args=(master,))
+        thread.daemon = True  # Ensure thread exits when the main program ends
+        thread.start()
+
+    def loop(self, master):
+        for i in range(master.count_var.get()):
+            # Simulate interaction with Webdriver
+            self.status_var.set("connecting")
+            self.driver = Webdriver(master.url_var.get())
+            for action in master.actions:
+                self.status_var.set(action["title"])
+                do_function = action["function"]
+                if do_function == "click":
+                    self.driver.on_click(action["type"], action["path"])
+                    # self.driver.onhold(5)
+                elif do_function == "send_key":
+                    if isinstance(action['value'],dict):
+                        table = action['value']['table']
+                        column = action['value']['column']
+                        row = i + 1
+                        value = getData(table,column,row)
+                        self.driver.assigenValue(action["type"], action["path"], value,time=action['delay'])
+                    else:
+                        # self.driver.onhold(4)
+                        self.driver.assigenValue(action["type"], action["path"], action["value"],time=action['delay'])
+                        # self.driver.onhold(4)
+                else:
+                    print("Unknown function:", do_function)
+            self.driver.onhold(5)
+            self.driver.onDelete()
+
+
+def getData(table, column, row, db_path="database/user_details.db"):
+    conn = sqlite3.connect(db_path)  # Create a new connection for the current thread
+    cursor = conn.cursor()
+    try:
+        result = cursor.execute(f'''SELECT {column} FROM {table} WHERE rowid = {row}''').fetchone()
+        return result[0] if result else None
+    finally:
+        conn.close()  # Ensure the connection is closed after use

@@ -23,6 +23,7 @@ class App(customtkinter.CTk):
         self.actions = []
         self.name = ''
         self.url_var = customtkinter.StringVar()
+        self.count_var = customtkinter.IntVar(value=10)
 
         # name label
         name_label = customtkinter.CTkLabel(
@@ -33,6 +34,7 @@ class App(customtkinter.CTk):
         name_label.grid(column=0, row=0, pady=10)
 
         # url frame
+        # URL Frame
         self.url_frame = customtkinter.CTkFrame(self, width=750, height=50)
         self.url_frame.grid(column=0, row=1, pady=5, sticky="n")
         self.url_frame.grid_propagate(False)
@@ -40,13 +42,26 @@ class App(customtkinter.CTk):
         # Configure grid layout for centering
         self.url_frame.grid_columnconfigure(0, weight=1)
         self.url_frame.grid_columnconfigure(1, weight=1)
+        self.url_frame.grid_columnconfigure(2, weight=1)  # Add column for count_label
+        self.url_frame.grid_columnconfigure(3, weight=1)  # Add column for count_entry
         self.url_frame.grid_rowconfigure(0, weight=1)
 
+        # URL Label
         self.url_label = customtkinter.CTkLabel(self.url_frame, text="Enter Url :")
         self.url_label.grid(row=0, column=0, padx=10, pady=5, sticky="e")
 
-        self.url_entry = customtkinter.CTkEntry(self.url_frame, textvariable=self.url_var, width=600)
+        # URL Entry (Decrease width)
+        self.url_entry = customtkinter.CTkEntry(self.url_frame, textvariable=self.url_var, width=400)
         self.url_entry.grid(column=1, row=0, padx=10, pady=5, sticky="w")
+
+        # Count Label
+        self.count_label = customtkinter.CTkLabel(self.url_frame, text="Count:")
+        self.count_label.grid(row=0, column=2, padx=10, pady=5, sticky="e")
+
+        # Count Entry
+        self.count_entry = customtkinter.CTkEntry(self.url_frame, textvariable=self.count_var, width=100)
+        self.count_entry.grid(column=3, row=0, padx=10, pady=5, sticky="w")
+
 
 
         # main frame design

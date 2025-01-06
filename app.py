@@ -207,9 +207,11 @@ class App(customtkinter.CTk):
         print(result)
 
     def save_dailog(self):
-        action = SaveBox(self,self.actions,'')
-        action.show()
-
+        action = SaveBox(self,self.actions,self.name,self.url_var.get())
+        result = action.show()
+        if result:
+            self.name = result
+            
 if __name__ == "__main__":
     app = App()
     app.mainloop()

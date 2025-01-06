@@ -27,15 +27,19 @@ class Store:
             actions = []
             try:
                 with open(f"presets/{filename}.txt", "r") as f:
+                    i = 0
                     for line in f:
                         action = line.replace('\n',"")
-                        actions.append(eval(action))
-
-                result["url"]=actions[0]
-                actions.pop(0)
+                        if i==0:
+                            result["url"]=action
+                            i+=1
+                        else:
+                            actions.append(eval(action))
+                            i+=1
                 result["actions"]= actions
                 result["name"]= filename
                 return result
             except Exception as e:
                 print(e)
                 return {"error":e}
+            

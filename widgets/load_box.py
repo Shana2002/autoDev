@@ -1,5 +1,6 @@
 import customtkinter as ctk
 import os
+from models.Store import Store
 
 class LoadBox:
     def __init__(self, parent, actions):
@@ -11,6 +12,7 @@ class LoadBox:
         self.dialog.resizable(False, False)
         self.actions = actions
         self.result = None
+        self.file_name = None
 
         # Files list
         self.files = self.list_files()
@@ -55,7 +57,7 @@ class LoadBox:
         file_names = list(map(lambda name: name.replace('.txt',''),file_names))
         return file_names
 
-    def load(self):
+    def load1(self):
         """Handle the load action."""
         if self.result:
             selected_file = self.result["name"]
@@ -74,6 +76,13 @@ class LoadBox:
                 return self.result
             self.dialog.destroy()
 
+    def load(self):
+        if self.file_name:
+            result = Store().load(self.file_name)
+            if result:
+                self.result = result
+            self.dialog.destroy()
+
     def select_file(self, event, file_name, label):
         """Handle file selection and change label color."""
         # Reset the background color of all labels to default (transparent)
@@ -84,7 +93,8 @@ class LoadBox:
         label.configure(bg_color="#4CAF50", fg_color="blue")
 
         # Save the selected file name in the result
-        self.result = {"name": file_name}
+        # self.result = {"name": file_name}
+        self.file_name = file_name
 
 
 # Example usage

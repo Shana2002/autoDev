@@ -1,3 +1,3 @@
 http://localhost/galleryCafe/
 {'title': 'Action 1', 'function': 'click', 'type': 'xpath', 'path': 'dfsfsfds', 'value': None, 'delay': 2}
-{'title': 'Action 2', 'function': 'click', 'type': 'xpath', 'path': 'fdsfdsfds', 'value': None, 'delay': 2}
+{'title': 'Action 2sda', 'function': 'click', 'type': 'xpath', 'path': 'fdsfdsfds', 'value': None, 'delay': 2}

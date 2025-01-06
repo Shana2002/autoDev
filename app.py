@@ -166,11 +166,11 @@ class App(customtkinter.CTk):
         delete_button.grid(row=1, column=3, padx=5, pady=5)
 
         if i>0:
-            up_button = customtkinter.CTkButton(self.action_card, text="Up", width=70)
+            up_button = customtkinter.CTkButton(self.action_card, text="Up", width=70,command= lambda index=i:self.move_action(index,-1))
             up_button.grid(row=2, column=2, padx=5, pady=5)
 
         if i < len(self.actions) - 1:
-            down_button = customtkinter.CTkButton(self.action_card, text="Down", width=70)
+            down_button = customtkinter.CTkButton(self.action_card, text="Down", width=70,command= lambda index=i:self.move_action(index,1))
             down_button.grid(row=2, column=3, padx=5, pady=5)
 
         # Adjust the grid proportions within the card
@@ -204,14 +204,28 @@ class App(customtkinter.CTk):
     def load_presets(self):
         action = LoadBox(self,self.actions)
         result = action.show()
-        print(result)
+        if result:
+            self.actions.clear()
+            self.url_var.set(result["url"])
+            self.actions = result["actions"]
+            self.name = result["name"]
+            self.update_action()
 
     def save_dailog(self):
         action = SaveBox(self,self.actions,self.name,self.url_var.get())
         result = action.show()
         if result:
             self.name = result
-            
+
+    def move_action(self, index, direction):
+        """Move an action up or down in the list and refresh the sub-frames."""
+        new_index = index + direction
+        if 0 <= new_index < len(self.actions):
+            # Swap the actions
+            self.actions[index], self.actions[new_index] = self.actions[new_index], self.actions[index]
+            # Refresh the UI
+            self.update_action()
+
 if __name__ == "__main__":
     app = App()
     app.mainloop()

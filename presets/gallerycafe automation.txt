@@ -1,0 +1,4 @@
+http://localhost/galleryCafe/
+{'title': 'click login button', 'function': 'click', 'type': 'xpath', 'path': '/html/body/div[1]/div/div[3]/a[1]/i', 'value': None, 'delay': 3}
+{'title': 'add username', 'function': 'send_key', 'type': 'xpath', 'path': '//*[@id="username"]', 'value': {'table': 'users', 'column': 'username'}, 'delay': 2}
+{'title': 'password add', 'function': 'send_key', 'type': 'xpath', 'path': '//*[@id="password"]', 'value': {'table': 'users', 'column': 'password'}, 'delay': 2}

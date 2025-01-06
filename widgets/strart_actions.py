@@ -21,6 +21,7 @@ class StartAction:
         self.time_var = ctk.StringVar(value="00:00:00")
         self.est_time_var = ctk.StringVar(value="Estimating....")
         self.status_var = ctk.StringVar(value="Starting...")
+        self.count_var = ctk.StringVar(value="Counting : .....")
         self.update_est = False
         self.stop_thread = False  # Thread termination flag
 
@@ -31,6 +32,10 @@ class StartAction:
         self.runner.grid_rowconfigure(0, weight=1)
         self.runner.grid_rowconfigure(2, weight=1)
         self.runner.grid_columnconfigure(0, weight=1)
+
+        # count lable
+        self.count_label = ctk.CTkLabel(self.runner,textvariable=self.count_var)
+        self.count_label.grid(row=0,column=0, sticky="nsew")
 
         # Frame to hold all widgets, centered in the window
         self.frame = ctk.CTkFrame(self.runner)
@@ -86,6 +91,7 @@ class StartAction:
             for i in range(self.range):
             # Simulate interaction with Webdriver
                 self.status_var.set("connecting")
+                self.count_var.set(f"Count : {i+1}")
                 self.cal_est_time(i)
                 self.driver = Webdriver(master.url_var.get())
                 for action in master.actions:
